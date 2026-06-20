@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网易邮箱6.0 - 登录</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-bg"></div>
+    <div class="page-container">
+        <!-- 1. Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-area">
+                        <!-- Inline SVG Logo for better compatibility -->
+                        <svg width="220" height="40" viewBox="0 0 220 40" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+                            <!-- 163 -->
+                            <text x="0" y="34" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="italic" font-size="34" fill="#d81e06">163</text>
+                            <!-- 网易邮箱 -->
+                            <text x="70" y="34" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif" font-weight="bold" font-size="24" fill="#333">网易邮箱</text>
+                            <!-- 6.0 -->
+                            <text x="175" y="34" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="24" fill="#d81e06">6.0</text>
+                        </svg>
+                        <span class="header-divider">|</span>
+                        <span class="page-title">登录</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <a href="https://mail.163.com/client/mobile.do" target="_blank">手机App下载</a>
+                    <a href="https://mail.163.com/client/dl.do" target="_blank">电脑客户端下载</a>
+                    <a href="https://vip.163.com/" target="_blank">VIP</a>
+                    <a href="https://vip.163.com/" target="_blank">会员</a>
+                    <a href="https://qiye.163.com/" target="_blank">企业邮箱</a>
+                    <a href="https://hw.mail.163.com/" target="_blank">海外登录</a>
+                    <span class="header-divider">|</span>
+                    <a href="http://help.mail.163.com/faq.do?m=list&categoryID=1" target="_blank">帮助和反馈</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- 4. Login Box -->
+            <div class="login-box">
+                <!-- 5. QR Code Corner -->
+                <!-- 5. QR Code Corner -->
+                <div class="qr-corner" onclick="toggleLoginMode()">
+                    <div class="qr-tooltip" id="qrTooltip">
+                        扫码登录
+                        <div class="tooltip-arrow"></div>
+                    </div>
+                    <!-- QR icon 52x52 -->
+                    <div class="qr-icon" id="qrToggleIcon">
+                        <img src="images/qr_icon.png" alt="扫码登录" class="corner-img">
+                    </div>
+                </div>
+
+                <div class="login-content">
+                    <!-- Password Login View -->
+                    <div id="password-login-view">
+                        <!-- 5. Title -->
+                        <h2 class="login-title">账号登录</h2>
+
+                        <!-- 6. User Input -->
+                        <div class="input-group user-group">
+                            <div class="input-wrapper">
+                                <input type="text" class="input-field" id="username" placeholder="邮箱账号或手机号码">
+                                <span class="input-suffix">@163.com</span>
+                            </div>
+                        </div>
+
+                        <!-- 7. Password Input -->
+                        <div class="input-group password-group">
+                            <div class="input-wrapper">
+                                <input type="password" class="input-field" id="password" placeholder="输入密码">
+                                <span class="eye-icon" onclick="togglePassword()" id="eyeIconWrapper">
+                                    <!-- Default Closed Eye (Slash) -->
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#999" id="eyeIconSvg">
+                                        <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46A11.804 11.804 0 0 0 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- 8. Options -->
+                        <div class="options-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox"> 30天免登录
+                            </label>
+                            <a href="https://reg.163.com/naq/findPassword" target="_blank" class="forget-link">忘记密码</a>
+                        </div>
+
+                        <!-- 9. Login Button -->
+                        <button class="login-btn" id="loginBtn">登 录</button>
+                    </div>
+
+                    <!-- QR Login View -->
+                    <div id="qr-login-view" style="display: none;">
+                        <div class="qr-main-container">
+                            <h2 class="login-title">扫码登录</h2>
+                            <div class="qr-text" style="text-align: center; color: #666; font-size: 12px; margin-bottom: 15px;">
+                                请使用 <a href="#" style="color: #386F96; text-decoration: none;">网易邮箱App</a> 扫码登录
+                            </div>
+                            <div class="qr-code-img" style="text-align: center; margin-bottom: 10px;">
+                                <img src="images/qr_icon.png" alt="二维码" style="width: 130px; height: 130px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 10. Register Links (Shared) -->
+                    <div class="register-row">
+                        <a href="https://mail.163.com/register/index.htm" target="_blank">注册新账号</a>
+                        <span class="register-divider">|</span>
+                        <a href="https://vip.163.com/register/index.htm" target="_blank">注册VIP</a>
+                    </div>
+
+                    <!-- 11. Footer inside box (Shared) -->
+                    <div class="login-box-footer">
+                        阅读并接受<a href="https://mail.163.com/html/mail_intro/service_clause.htm" target="_blank">《服务条款》</a>和<a href="https://mail.163.com/html/mail_intro/privacy_policy.htm" target="_blank">《隐私政策》</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 12. Page Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="https://www.163.com/" target="_blank">网易首页</a>
+                <span class="footer-divider">|</span>
+                <a href="https://you.163.com/" target="_blank">网易严选</a>
+                <span class="footer-divider">|</span>
+                <a href="https://gongyi.163.com/" target="_blank">政府公益热线</a>
+                <span class="footer-divider">|</span>
+                <a href="https://corp.163.com/" target="_blank">网易公司版权所有</a>
+            </div>
+            <div class="footer-info">
+                <span>© 1997-2026 网易公司版权所有</span>
+                <span class="info-spacer"></span>
+                <span class="record-icon">🛡️</span>
+                <span>ICP备案信息</span>
+            </div>
+        </footer>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

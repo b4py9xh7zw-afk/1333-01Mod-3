@@ -1,0 +1,478 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    /* User requested "Quirks Box Model" which usually means border-box in modern context */
+    box-sizing: border-box; 
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-size: 14px; /* Requirement 1 */
+    color: #333;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Page Background - Requirement 3 */
+.page-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/background.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: -1;
+}
+
+.page-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header - Requirement 1 & 2 */
+.header {
+    height: 80px; /* Assumed height */
+    width: 100%;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+}
+
+.logo-svg {
+    height: 40px;
+    width: auto; /* Allow width to scale based on aspect ratio */
+    display: block;
+}
+
+.netease-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #d81e06; /* NetEase Red */
+}
+
+.header-divider {
+    margin: 0 10px;
+    color: #ccc;
+    font-size: 18px;
+}
+
+.page-title {
+    font-size: 20px;
+    color: #333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.header-right a {
+    margin: 0 10px;
+    color: #333;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center; /* Vertical Center */
+}
+
+/* Login Box - Requirement 4 */
+.login-box {
+    position: absolute;
+    left: 40%; /* Requirement 4: Left 40% position */
+    top: 50%;
+    transform: translateY(-50%); /* Vertical Center */
+    
+    width: 400px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 30px; /* Top/Bottom 8px, Left/Right 30px */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* QR Corner - Requirement 5 & User Update */
+.qr-corner {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    width: 52px;
+    height: 52px;
+}
+
+.qr-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    /* Create a diagonal triangle (top-right half) */
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+/* PC Icon SVG Style (Generated via JS) */
+.pc-icon-svg {
+    width: 100%;
+    height: 100%;
+    padding: 8px; /* Give some space */
+    background: #f0f0f0; /* Light background for PC icon */
+}
+
+.corner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.qr-tooltip {
+    position: absolute;
+    right: 60px; /* Left of the icon */
+    top: 12px;
+    background-color: #fff;
+    color: #666;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    white-space: nowrap;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    pointer-events: none; /* Let clicks pass through */
+}
+
+/* Show tooltip on hover over the entire corner area */
+.qr-corner:hover .qr-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    right: -5px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    transform: rotate(45deg);
+}
+
+/* QR Login View Styles */
+.qr-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* padding: 20px 0; Removed to avoid double padding with .login-content */
+    min-height: 290px; /* Match approximate height of password login view */
+}
+
+.qr-code-wrapper {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 20px;
+}
+
+.qr-code-large {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.qr-desc {
+    font-size: 14px;
+    color: #666;
+}
+
+.qr-desc a {
+    color: #3370ff;
+}
+
+
+/* Login Form Content */
+.login-content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.login-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    margin-bottom: 40px; /* Requirement 6 distance */
+}
+
+/* Inputs - Requirement 6 & 7 */
+.input-group {
+    width: 100%;
+}
+
+.user-group {
+    margin-bottom: 20px; /* Requirement 7 distance from password */
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #4573f6;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.input-field {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 14px;
+    line-height: 18px;
+    border-radius: 3px;
+}
+
+.input-suffix {
+    padding-right: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.eye-icon {
+    padding-right: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* Options - Requirement 8 */
+.options-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #666;
+}
+
+.checkbox-label input {
+    margin-right: 4px;
+}
+
+.forget-link {
+    color: #666;
+}
+
+/* Login Button - Requirement 9 */
+.login-btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 50px;
+    background-color: #3370ff;
+    color: #fff;
+    font-size: 24px;
+    border: none;
+    border-radius: 4px; /* Optional standard radius */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #2858cc;
+}
+
+/* Register Links - Requirement 10 */
+.register-row {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.register-row a {
+    color: #666;
+    margin: 0 10px;
+}
+
+.register-divider {
+    color: #ccc;
+}
+
+/* Footer inside box - Requirement 11 */
+.login-box-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+}
+
+.login-box-footer a {
+    color: #999;
+}
+
+/* Page Footer - Requirement 12 */
+.footer {
+    width: 100%;
+    padding: 20px 0 30px 0; /* Last line 30px from bottom */
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.3); /* Optional readability */
+}
+
+.footer-links {
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+    color: #fff;
+    margin: 0 10px;
+}
+
+.footer-divider {
+    color: #fff;
+}
+
+.footer-info {
+    font-size: 14px;
+    color: #fff;
+}
+
+.info-spacer {
+    display: inline-block;
+    width: 20px; /* Requirement 12: 20px spacing */
+}
+
+.record-icon {
+    margin-right: 5px;
+}
+
+/* Toast Notification Styles */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background-color: #52c41a;
+}
+
+.toast.error {
+    background-color: #ff4d4f;
+}
+
+.toast-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Responsive H5 - Requirement 2 */
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 0 10px;
+        height: auto;
+        flex-direction: column;
+        padding-top: 10px;
+    }
+    
+    .header-right {
+        display: none; /* Hide top links on mobile for simplicity */
+    }
+
+    .login-box {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin: 20px auto;
+        width: 90%;
+        padding: 20px;
+    }
+    
+    .main-content {
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .footer {
+        position: relative;
+        background: #333;
+        padding: 20px 10px;
+    }
+}
