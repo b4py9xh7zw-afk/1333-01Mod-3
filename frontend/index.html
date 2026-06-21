@@ -65,9 +65,26 @@
 
                         <!-- 6. User Input -->
                         <div class="input-group user-group">
-                            <div class="input-wrapper">
-                                <input type="text" class="input-field" id="username" placeholder="邮箱账号或手机号码">
+                            <div class="input-wrapper user-input-wrapper">
+                                <div class="user-avatar" id="userAvatar">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#999">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" class="input-field user-input-field" id="username" placeholder="邮箱账号或手机号码">
                                 <span class="input-suffix">@163.com</span>
+                                <span class="dropdown-arrow" id="accountDropdownToggle">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#999">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="account-dropdown" id="accountDropdown">
+                                <div class="account-dropdown-header">
+                                    <span>历史账号</span>
+                                </div>
+                                <div class="account-list" id="accountList">
+                                </div>
                             </div>
                         </div>
 
@@ -87,7 +104,10 @@
                         <!-- 8. Options -->
                         <div class="options-row">
                             <label class="checkbox-label">
-                                <input type="checkbox"> 30天免登录
+                                <input type="checkbox" id="publicComputer"> 公共电脑
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="autoLogin"> 30天免登录
                             </label>
                             <a href="https://reg.163.com/naq/findPassword" target="_blank" class="forget-link">忘记密码</a>
                         </div>
