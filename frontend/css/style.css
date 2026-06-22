@@ -259,6 +259,14 @@ a:hover {
     position: relative;
 }
 
+.password-group {
+    margin-bottom: 20px;
+}
+
+.captcha-group {
+    margin-bottom: 20px;
+}
+
 .input-wrapper {
     position: relative;
     display: flex;
@@ -399,6 +407,87 @@ a:hover {
     text-align: center;
     font-size: 12px;
     color: #999;
+}
+
+.captcha-wrapper {
+    padding-right: 8px;
+}
+
+.captcha-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.captcha-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 8px;
+    border-left: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
+.captcha-image {
+    width: 100px;
+    height: 36px;
+    background: linear-gradient(135deg, #f5f7fa, #e4e8ec);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: "Comic Sans MS", "Courier New", monospace;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.captcha-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 3px,
+            rgba(0,0,0,0.03) 3px,
+            rgba(0,0,0,0.03) 6px
+        );
+}
+
+.captcha-image span {
+    position: relative;
+    z-index: 1;
+}
+
+.captcha-refresh {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.captcha-refresh:hover {
+    background-color: #f0f2f5;
+}
+
+.captcha-refresh:hover svg {
+    fill: #3370ff;
+}
+
+.input-suffix.hidden {
+    display: none;
 }
 
 .input-field {

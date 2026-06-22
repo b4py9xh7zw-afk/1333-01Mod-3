@@ -1,5 +1,81 @@
 const ACCOUNT_STORAGE_KEY = 'mail163_accounts';
 const MAX_HISTORY_ACCOUNTS = 10;
+let currentCaptcha = '';
+
+function generateCaptcha() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let result = '';
+    for (let i = 0; i < 4; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+function getRandomColor(min = 50, max = 150) {
+    const r = Math.floor(Math.random() * (max - min)) + min;
+    const g = Math.floor(Math.random() * (max - min)) + min;
+    const b = Math.floor(Math.random() * (max - min)) + min;
+    return `rgb(${r},${g},${b})`;
+}
+
+function renderCaptcha() {
+    currentCaptcha = generateCaptcha();
+    const captchaImage = document.getElementById('captchaImage');
+    if (!captchaImage) return;
+
+    let html = '';
+    for (let i = 0; i < currentCaptcha.length; i++) {
+        const color = getRandomColor(30, 120);
+        const rotate = (Math.random() - 0.5) * 30;
+        const scaleY = 0.8 + Math.random() * 0.4;
+        html += `<span style="color: ${color}; transform: rotate(${rotate}deg) scaleY(${scaleY}); display: inline-block;">${currentCaptcha.charAt(i)}</span>`;
+    }
+    captchaImage.innerHTML = html;
+}
+
+function refreshCaptcha() {
+    renderCaptcha();
+    document.getElementById('captcha').value = '';
+}
+
+function updateEmailSuffix(email) {
+    const suffixEl = document.getElementById('emailSuffix');
+    const usernameInput = document.getElementById('username');
+    
+    if (!email) {
+        suffixEl.textContent = '@163.com';
+        suffixEl.classList.remove('hidden');
+        return;
+    }
+
+    const atIndex = email.indexOf('@');
+    if (atIndex !== -1) {
+        const suffix = email.substring(atIndex);
+        suffixEl.textContent = suffix;
+        suffixEl.classList.remove('hidden');
+        usernameInput.value = email.substring(0, atIndex);
+    } else if (/^\d+$/.test(email)) {
+        suffixEl.classList.add('hidden');
+        usernameInput.value = email;
+    } else {
+        suffixEl.textContent = '@163.com';
+        suffixEl.classList.remove('hidden');
+        usernameInput.value = email;
+    }
+}
+
+function getFullEmail() {
+    const usernameInput = document.getElementById('username');
+    const suffixEl = document.getElementById('emailSuffix');
+    const value = usernameInput.value.trim();
+    
+    if (!value) return '';
+    
+    if (suffixEl.classList.contains('hidden')) {
+        return value;
+    }
+    return value + suffixEl.textContent;
+}
 
 function getHistoryAccounts() {
     try {
@@ -104,9 +180,10 @@ function renderAccountList() {
                 const email = deleteBtn.getAttribute('data-delete');
                 deleteHistoryAccount(email);
                 renderAccountList();
-                const currentUsername = document.getElementById('username').value;
-                if (currentUsername === email) {
+                const currentEmail = getFullEmail();
+                if (currentEmail === email) {
                     document.getElementById('username').value = '';
+                    updateEmailSuffix('');
                     updateAvatar('');
                 }
                 showToast('账号已删除', 'success');
@@ -137,9 +214,11 @@ function updateAvatar(email) {
 }
 
 function selectAccount(email) {
-    document.getElementById('username').value = email;
+    updateEmailSuffix(email);
     document.getElementById('password').value = '';
+    document.getElementById('captcha').value = '';
     updateAvatar(email);
+    refreshCaptcha();
     hideAccountDropdown();
     document.getElementById('password').focus();
 }
@@ -260,14 +339,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('loginBtn');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
+    const captchaInput = document.getElementById('captcha');
     const accountDropdownToggle = document.getElementById('accountDropdownToggle');
     const userAvatar = document.getElementById('userAvatar');
     const publicComputerCheckbox = document.getElementById('publicComputer');
 
+    renderCaptcha();
+
     const accounts = getHistoryAccounts();
     if (accounts.length > 0) {
+        updateEmailSuffix(accounts[0].email);
         updateAvatar(accounts[0].email);
-        usernameInput.value = accounts[0].email;
     }
 
     accountDropdownToggle.addEventListener('click', (e) => {
@@ -290,6 +372,17 @@ document.addEventListener('DOMContentLoaded', () => {
     usernameInput.addEventListener('input', () => {
         const value = usernameInput.value.trim();
         updateAvatar(value);
+        
+        if (value && value.indexOf('@') === -1 && !/^\d+$/.test(value)) {
+            const suffixEl = document.getElementById('emailSuffix');
+            suffixEl.classList.remove('hidden');
+        }
+    });
+
+    captchaInput.addEventListener('input', () => {
+        let value = captchaInput.value.toUpperCase();
+        value = value.replace(/[^A-Z0-9]/g, '');
+        captchaInput.value = value;
     });
 
     document.addEventListener('click', (e) => {
@@ -308,10 +401,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
+            const email = getFullEmail();
             const password = passwordInput.value.trim();
+            const captcha = captchaInput.value.trim().toUpperCase();
 
-            if (!username) {
+            if (!email) {
                 showToast('请输入邮箱账号或手机号码', 'error');
                 usernameInput.focus();
                 return;
@@ -323,7 +417,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            saveHistoryAccount(username);
+            if (!captcha) {
+                showToast('请输入验证码', 'error');
+                captchaInput.focus();
+                return;
+            }
+
+            if (captcha !== currentCaptcha) {
+                showToast('验证码错误', 'error');
+                captchaInput.focus();
+                captchaInput.select();
+                refreshCaptcha();
+                return;
+            }
+
+            saveHistoryAccount(email);
 
             showToast('登录成功', 'success');
         });
